@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Liste d'Établissements</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+	<header class="header d-flex justify-content-between align-items-center">
+		<h4 class="mb-0">Liste <strong>d'Établissements</strong></h4>
+		<button class="btn btn-success" id="addSchoolBtn">+ Ajouter un établissement</button>
+	</header>
+
+	<main class="card m-3 p-3 border-0">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Quartier</th>
+					<th>Date de création</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody id="schoolTableBody">
+				<tr class="text-center text-muted" id="emptySchoolsRow">
+					<td colspan="4">Liste vide</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<!-- #region Add/Edit Modal for Schools -->
+	<div class="modal fade" id="schoolModal" tabindex="-1">
+		<div class="modal-dialog modal-2xl modal-xl">
+			<form class="modal-content" id="schoolModal_form">
+				<header class="modal-header">
+					<h5 class="modal-title" id="schoolModal_title">Ajouter un établissement</h5>
+				</header>
+				<div class="modal-body">
+					<fieldset>
+						<label class="mb-3 w-100">
+							<span class="d-block">Nom d'Établissement</span>
+							<small class="text-danger d-none">Entrez le nom de l'établissement</small>
+							<input type="text" class="form-control" id="schoolModal_form_name" placeholder="Entrez le nom de l'établissement">
+						</label>
+						<label class="mb-3 w-100">
+							<span class="d-block">Quartier</span>
+							<small class="text-danger d-none">Entrez le nom du quartier</small>
+							<input type="text" class="form-control" id="schoolModal_form_quarter" placeholder="Entrez le nom du quartier">
+						</label>
+						<label class="mb-3 w-100">
+							<span class="d-block">Date de création</span>
+							<small class="text-danger d-none">Entrez la date de création de l'établissement</small>
+							<input type="date" class="form-control" id="schoolModal_form_date">
+						</label>
+					</fieldset>
+
+					<label class="mb-3 w-100">
+						<button type="button" id="schoolModal_addKlassBtn" class="btn btn-success">+ Ajouter une classe</button>
+					</label>
+					<table class="table table-striped table-inverse table-responsive mb-4">
+						<thead class="thead-inverse text-sm">
+							<tr>
+								<th>Nom de Classe</th>
+								<th>Filiere</th>
+								<th>Professeur titulaire</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody id="klassTableBody">
+							<tr class="text-center text-muted" id="emptyClassesRow">
+								<td colspan="5">Liste vide</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<label class="mb-3 w-100">
+						<button type="submit" id="schoolModal_form_submitBtn" class="btn btn-success">Enregistrer</button>
+					</label>
+				</div>
+				<footer class="modal-footer">
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+				</footer>
+			</form>
+		</div>
+	</div>
+	<!-- #endregion -->
+
+	<!-- #region Add/Edit Modal for Klasses -->
+	<div class="modal fade" id="klassModal" tabindex="-1">
+		<div class="modal-dialog modal-xl">
+			<form class="modal-content" id="klassModal_form">
+				<header class="modal-header">
+					<h5 class="modal-title" id="klassModal_title">Ajouter une classe</h5>
+				</header>
+				<div class="modal-body">
+					<fieldset>
+						<label class="mb-3 w-100">
+							<span class="d-block">Nom de la classe</span>
+							<small class="text-danger d-none">Entrez le nom de la classe</small>
+							<input type="text" class="form-control" id="klassModal_form_name" placeholder="Entrez le nom de la classe">
+						</label>
+						<label class="mb-3 w-100">
+							<span class="d-block">Filière</span>
+							<small class="text-danger d-none">Entrez le nom de la filière</small>
+							<input type="text" class="form-control" id="klassModal_form_program" placeholder="Entrez le nom de la Filière">
+						</label>
+						<label class="mb-3 w-100">
+							<span class="d-block">Prof titulaire</span>
+							<small class="text-danger d-none">Entrez le nom du Prof titulaire de la classe</small>
+							<input type="text" class="form-control" id="klassModal_form_prof" placeholder="Entrez le nom du Prof titulaire de la classe">
+						</label>
+					</fieldset>
+
+					<label class="mb-3 w-100">
+						<button type="button" id="klassModal_addStudentBtn" class="btn btn-success">+ Ajouter un élève</button>
+					</label>
+					<table class="table table-striped table-inverse table-responsive mb-4">
+						<thead class="thead-inverse text-sm">
+							<tr>
+								<th>Nom</th>
+								<th>Prénom</th>
+								<th>Date de naissance</th>
+								<th>Sexe</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody id="studentTableBody">
+							<tr class="text-center text-muted" id="emptyStudentsRow">
+								<td colspan="5">Liste vide</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<label class="mb-3 w-100">
+						<button type="submit" id="klassModal_form_submitBtn" class="btn btn-success">Enregistrer</button>
+					</label>
+				</div>
+				<footer class="modal-footer">
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+				</footer>
+			</form>
+		</div>
+	</div>
+	<!-- #endregion -->
+
+	<!-- #region Add/Edit Modal for Students -->
+	<div class="modal fade" id="studentModal" tabindex="-1">
+		<div class="modal-dialog modal-lg">
+			<form class="modal-content" id="studentModal_form">
+				<header class="modal-header">
+					<h5 class="modal-title" id="studentModal_title">Ajouter un élève</h5>
+				</header>
+				<div class="modal-body">
+					<fieldset>
+						<label class="mb-3 w-100">
+							<span class="d-block">Nom de la classe</span>
+							<small class="text-danger d-none">Entrez le nom de la classe</small>
+							<input type="text" class="form-control" id="studentModal_form_lastName" placeholder="Entrez le nom de la classe">
+						</label>
+						<label class="mb-3 w-100">
+							<span class="d-block">Filière</span>
+							<small class="text-danger d-none">Entrez le prénom de l'élève</small>
+							<input type="text" class="form-control" id="studentModal_form_firstName" placeholder="Entrez le prénom de l'élève">
+						</label>
+						<label class="mb-3 w-100">
+							<span class="d-block">Date de naissance</span>
+							<small class="text-danger d-none">Entrez la date de naissance de l'élève</small>
+							<input type="date" class="form-control" id="studentModal_form_dateOfBirth" placeholder="Entrez la date de naissance de l'élève">
+						</label>
+						<label class="mb-3 w-100">
+							<span class="d-block">Sexe</span>
+							<small class="text-danger d-none">Choisissez le sexe de l'élève</small>
+							<select class="form-control" id="studentModal_form_gender">
+								<option value="" disabled selected>Choisissez le sexe de l'élève</option>
+								<option value="Masculin">Masculin</option>
+								<option value="Féminin">Féminin</option>
+							</select>
+						</label>
+					</fieldset>
+
+					<label class="mb-3 w-100">
+						<button type="submit" id="studentModal_form_submitBtn" class="btn btn-success">Enregistrer</button>
+					</label>
+				</div>
+				<footer class="modal-footer">
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+				</footer>
+			</form>
+		</div>
+	</div>
+	<!-- #endregion -->
+
+	<!-- #region Delete Confirm Modal -->
+	<div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<header class="modal-header">
+					<h5 class="modal-title">Supprimer</h5>
+				</header>
+				<div class="modal-body">
+					Êtes-vous sûr de vouloir supprimer cet élément ?
+				</div>
+				<div class="w-100 p-3">
+					<button class="btn btn-danger" id="confirmDeleteBtn">Supprimer</button>
+				</div>
+				<footer class="modal-footer">
+					<button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+				</footer>
+			</div>
+		</div>
+	</div>
+	<!-- #endregion -->
+
+	<!-- Scripts -->
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="js/services.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/schools.js"></script>
+
+</body>
+
+</html>

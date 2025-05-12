@@ -1,0 +1,26 @@
+body {
+	background-color: #f8f9fa;
+}
+
+.header {
+	background-color: #3b5875;
+	color: white;
+	padding: 1rem;
+}
+
+.card {
+	box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.modal-dialog.modal-2xl {
+	max-width: 90%;
+	width: 90%;
+}
+
+table.table th {
+	color: #3b5875
+}
+
+.modal {
+	color: #3b5875;
+}
