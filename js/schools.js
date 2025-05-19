@@ -122,10 +122,14 @@ $(document).ready(function () {
 			schoolModalElements.nameField.val(s.name);
 			schoolModalElements.quarterField.val(s.quarter);
 			schoolModalElements.dateField.val(s.dateCreated);
+			schoolModalElements.addKlassBtn.removeClass('disabled');
+			schoolModalElements.addKlassBtn.prop('disabled', false);
 		} else {
 			selectedSchoolId = -1;
 			schoolModalElements.title.text('Ajouter un établissement');
 			schoolModalElements.submitBtn.text('Enregistrer');
+			schoolModalElements.addKlassBtn.addClass('disabled');
+			schoolModalElements.addKlassBtn.prop('disabled', true);
 		}
 
 		renderKlassList(schoolId);
@@ -145,10 +149,14 @@ $(document).ready(function () {
 			klassModalElements.nameField.val(k.name);
 			klassModalElements.programField.val(k.program);
 			klassModalElements.profField.val(k.prof);
+			klassModalElements.addStudentBtn.removeClass('disabled');
+			klassModalElements.addStudentBtn.prop('disabled', false);
 		} else {
 			selectedKlassId = -1
 			klassModalElements.title.text('Ajouter une classe');
 			klassModalElements.submitBtn.text('Enregistrer');
+			klassModalElements.addStudentBtn.addClass('disabled');
+			klassModalElements.addStudentBtn.prop('disabled', true);
 		}
 
 		renderStudentList(selectedSchoolId, selectedKlassId);
