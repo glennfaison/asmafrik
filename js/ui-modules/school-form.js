@@ -36,11 +36,15 @@
 				this.schoolModalForm.on('submit', this.onSubmit.bind(this));
 
 				// Add a Klass
-				this.formElements.addKlassBtn.click(this.onAddKlassBtnClicked.bind(this));
+				this.formElements.addKlassBtn.click(() => {
+					args.utils.setQueryParams({ 'klass': '' });
+					this.onAddKlassBtnClicked();
+				});
 				// Edit a Klass
 				this.klassTableBody.on('click', '.editBtn', async (e) => {
 					const klassId = $(e.target).data('id') || -1;
 					const klass = await this.klassService.getKlassById(this.selectedSchool?.id, klassId);
+					args.utils.setQueryParams({ 'klass': klassId });
 					this.onEditKlassBtnClicked(klass);
 				});
 				// Delete a Klass
@@ -48,6 +52,11 @@
 					const klassId = $(e.target).data('id') || -1;
 					const klass = await this.klassService.getKlassById(this.selectedSchool?.id, klassId);
 					this.onDeleteKlassBtnClicked(klass);
+				});
+
+				// Remove the 'school' query param when the schoolModal closes.
+				args.$(args.jQuerySelector).on('hidden.bs.modal', () => {
+					args.utils.removeQueryParam('school');
 				});
 			},
 			onDestroy: function () { },
@@ -172,8 +181,15 @@
 						break;
 				}
 
-				this.renderKlassList(this.selectedSchool?.id);
 				this.schoolModal.show();
+				await this.renderKlassList(this.selectedSchool?.id);
+
+				const query = args.utils.getQueryParams();
+				if (query.hasOwnProperty('klass') && query.klass === undefined) {
+					this.addKlassBtn.click();
+				} else if (query.hasOwnProperty('klass') && !!query.klass) {
+					this.klassTableBody.find(`.editBtn[data-id="${query.klass}"`).click();
+				}
 			},
 			hide: function () {
 				this.klassModal.hide();

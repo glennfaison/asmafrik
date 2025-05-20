@@ -27,6 +27,11 @@
 
 				// Submit a Student
 				this.studentModalForm.on('submit', this.onSubmit.bind(this));
+
+				// Remove the 'student' query param when the studentModal closes.
+				args.$(args.jQuerySelector).on('hidden.bs.modal', () => {
+					args.utils.removeQueryParam('student');
+				});
 			},
 			onDestroy: function () { },
 			//#endregion

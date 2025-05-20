@@ -6,10 +6,11 @@
 		noItemsRow,
 		$,
 		schoolService: setUpServices().schoolService,
+		utils: setUpUtils(),
 	}, function (args) {
 		return {
 			//#region lifecycle methods
-			onInit: function () {
+			onInit: async function () {
 				this.schoolTableBody = args.$('#schoolTableBody');
 				this.addSchoolBtn = args.$('#addSchoolBtn');
 				this.schoolService = args.schoolService;
@@ -17,13 +18,17 @@
 				this.EditSchoolBtnClickedListeners = [];
 				this.DeleteSchoolBtnClickedListeners = [];
 
-				this.renderSchoolList();
+				await this.renderSchoolList();
 
 				// Add a School
-				this.addSchoolBtn.click(this.onAddSchoolBtnClicked.bind(this));
+				this.addSchoolBtn.click(() => {
+					args.utils.setQueryParams({ 'school': '' });
+					this.onAddSchoolBtnClicked();
+				});
 				// Edit a School
 				this.schoolTableBody.on('click', '.editBtn', async (e) => {
 					const schoolId = $(e.target).data('id') || -1;
+					args.utils.setQueryParams({ 'school': schoolId });
 					const school = await this.schoolService.getSchoolById(schoolId);
 					this.onEditSchoolBtnClicked(school);
 				});
@@ -33,6 +38,13 @@
 					const school = await this.schoolService.getSchoolById(schoolId);
 					this.onDeleteSchoolBtnClicked(school);
 				});
+
+				const query = args.utils.getQueryParams();
+				if (query.hasOwnProperty('school') && query.school === undefined) {
+					this.addSchoolBtn.click();
+				} else if (query.hasOwnProperty('school') && !!query.school) {
+					this.schoolTableBody.find(`.editBtn[data-id="${query.school}"`).click();
+				}
 			},
 			onDestroy: function () {
 				// Cleanup code here
