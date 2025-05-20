@@ -52,7 +52,7 @@ function setUpServices() {
 			return schools;
 		},
 		getSchoolById: async function (id) {
-			return schools.find(school => school.id === `${id}`);
+			return schools.find(school => `${school.id}` === `${id}`);
 		},
 		addSchool: async function (school) {
 			school.id = `${lastSchoolId++}`;
@@ -60,7 +60,7 @@ function setUpServices() {
 			return school;
 		},
 		updateSchoolById: async function (id, school) {
-			const index = schools.findIndex(s => s.id === `${id}`);
+			const index = schools.findIndex(s => `${s.id}` === `${id}`);
 			if (index === -1) {
 				throw new Error('School not found');
 			}
@@ -68,7 +68,7 @@ function setUpServices() {
 			return schools[index];
 		},
 		deleteSchoolById: async function (id) {
-			const index = schools.findIndex(s => s.id === `${id}`);
+			const index = schools.findIndex(s => `${s.id}` === `${id}`);
 			if (index === -1) {
 				return;
 			}
@@ -77,20 +77,20 @@ function setUpServices() {
 	};
 
 	const klassService = {
-		listKlassesBySchool: async function (schoolId) {
-			const school = schools.find(school => school.id === `${schoolId}`);
+		listKlasses: async function (schoolId) {
+			const school = schools.find(school => `${school.id}` === `${schoolId}`);
 			return school?.klasses || [];
 		},
 		getKlassById: async function (schoolId, klassId) {
-			const school = schools.find(school => school.id === `${schoolId}`);
+			const school = schools.find(school => `${school.id}` === `${schoolId}`);
 			if (!school) {
 				return null;
 			}
-			const klass = school.klasses.find(klass => klass.id === `${klassId}`);
+			const klass = school.klasses.find(klass => `${klass.id}` === `${klassId}`);
 			return klass;
 		},
-		addKlassToSchool: async function (schoolId, klass) {
-			const schoolIndex = schools.findIndex(school => school.id === `${schoolId}`);
+		addKlass: async function (schoolId, klass) {
+			const schoolIndex = schools.findIndex(school => `${school.id}` === `${schoolId}`);
 			if (schoolIndex === -1) {
 				throw new Error('School not found');
 			}
@@ -99,11 +99,11 @@ function setUpServices() {
 			return klass;
 		},
 		updateKlassById: async function (schoolId, klassId, klass) {
-			const schoolIndex = schools.findIndex(school => school.id === `${schoolId}`);
+			const schoolIndex = schools.findIndex(school => `${school.id}` === `${schoolId}`);
 			if (schoolIndex === -1) {
 				throw new Error('School not found');
 			}
-			const klassIndex = schools[schoolIndex].klasses.findIndex(klass => klass.id === `${klassId}`);
+			const klassIndex = schools[schoolIndex].klasses.findIndex(klass => `${klass.id}` === `${klassId}`);
 			if (klassIndex === -1) {
 				throw new Error('Klass not found');
 			}
@@ -111,12 +111,12 @@ function setUpServices() {
 			return schools[schoolIndex].klasses[klassIndex];
 		},
 		deleteKlassById: async function (schoolId, klassId) {
-			const schoolIndex = schools.findIndex(school => school.id === `${schoolId}`);
+			const schoolIndex = schools.findIndex(school => `${school.id}` === `${schoolId}`);
 			if (schoolIndex === -1) {
 				return;
 			}
 			const klasses = schools[schoolIndex].klasses;
-			const klassIndex = klasses.findIndex(klass => klass.id === `${klassId}`);
+			const klassIndex = klasses.findIndex(klass => `${klass.id}` === `${klassId}`);
 			if (klassIndex === -1) {
 				return;
 			}
@@ -126,33 +126,33 @@ function setUpServices() {
 
 	const studentService = {
 		listStudents: async function (schoolId, klassId) {
-			const school = schools.find(school => school.id === `${schoolId}`);
+			const school = schools.find(school => `${school.id}` === `${schoolId}`);
 			if (!school) {
 				return [];
 			}
-			const klass = school.klasses.find(klass => klass.id === `${klassId}`);
+			const klass = school.klasses.find(klass => `${klass.id}` === `${klassId}`);
 			if (!klass) {
 				return [];
 			}
 			return klass.students;
 		},
 		getStudentById: async function (schoolId, klassId, studentId) {
-			const school = schools.find(school => school.id === `${schoolId}`);
+			const school = schools.find(school => `${school.id}` === `${schoolId}`);
 			if (!school) {
 				return null;
 			}
-			const klass = school.klasses.find(klass => klass.id === `${klassId}`);
+			const klass = school.klasses.find(klass => `${klass.id}` === `${klassId}`);
 			if (!klass) {
 				return null;
 			}
-			return klass.students.find(student => student.id === `${studentId}`);
+			return klass.students.find(student => `${student.id}` === `${studentId}`);
 		},
 		addStudent: async function (schoolId, klassId, student) {
-			const schoolIndex = schools.findIndex(school => school.id === `${schoolId}`);
+			const schoolIndex = schools.findIndex(school => `${school.id}` === `${schoolId}`);
 			if (schoolIndex === -1) {
 				throw new Error('School not found');
 			}
-			const klassIndex = schools[schoolIndex].klasses.findIndex(klass => klass.id === `${klassId}`);
+			const klassIndex = schools[schoolIndex].klasses.findIndex(klass => `${klass.id}` === `${klassId}`);
 			if (klassIndex === -1) {
 				throw new Error('Klass not found');
 			}
@@ -161,34 +161,34 @@ function setUpServices() {
 			klass.students.push(student);
 			return student;
 		},
-		updateStudent: async function (schoolId, klassId, studentId, student) {
-			const schoolIndex = schools.findIndex(school => school.id === `${schoolId}`);
+		updateStudentById: async function (schoolId, klassId, studentId, student) {
+			const schoolIndex = schools.findIndex(school => `${school.id}` === `${schoolId}`);
 			if (schoolIndex === -1) {
 				throw new Error('School not found');
 			}
-			const klassIndex = schools[schoolIndex].klasses.findIndex(klass => klass.id === `${klassId}`);
+			const klassIndex = schools[schoolIndex].klasses.findIndex(klass => `${klass.id}` === `${klassId}`);
 			if (klassIndex === -1) {
 				throw new Error('Klass not found');
 			}
 			const klass = schools[schoolIndex].klasses[klassIndex];
-			const studentIndex = klass.students.findIndex(s => s.id === `${studentId}`);
+			const studentIndex = klass.students.findIndex(s => `${s.id}` === `${studentId}`);
 			if (studentIndex === -1) {
 				throw new Error('Student not found');
 			}
 			klass.students[studentIndex] = { ...klass.students[studentIndex], ...student, id: `${studentId}` };
 			return klass.students[studentIndex];
 		},
-		deleteStudent: async function (schoolId, klassId, studentId) {
-			const schoolIndex = schools.findIndex(school => school.id === `${schoolId}`);
+		deleteStudentById: async function (schoolId, klassId, studentId) {
+			const schoolIndex = schools.findIndex(school => `${school.id}` === `${schoolId}`);
 			if (schoolIndex === -1) {
 				return;
 			}
-			const klassIndex = schools[schoolIndex].klasses.findIndex(klass => klass.id === `${klassId}`);
+			const klassIndex = schools[schoolIndex].klasses.findIndex(klass => `${klass.id}` === `${klassId}`);
 			if (klassIndex === -1) {
 				return;
 			}
 			const klass = schools[schoolIndex].klasses[klassIndex];
-			const studentIndex = klass.students.findIndex(s => s.id === `${studentId}`);
+			const studentIndex = klass.students.findIndex(s => `${s.id}` === `${studentId}`);
 			if (studentIndex === -1) {
 				return;
 			}
