@@ -11,16 +11,16 @@ $(document).ready(function () {
 	klassFormDialog.init();
 	studentFormDialog.init();
 
-	schoolPage.addAddSchoolBtnClickedListener(() => {
+	schoolPage.addEventListener('addSchoolBtnClicked', () => {
 		schoolFormDialog.show({ mode: 'create' });
 	});
-	schoolPage.addEditSchoolBtnClickedListener((school) => {
+	schoolPage.addEventListener('editSchoolBtnClicked', (school) => {
 		schoolFormDialog.show({ mode: 'edit', school });
 	});
-	schoolPage.addDeleteSchoolBtnClickedListener((school) => {
+	schoolPage.addEventListener('deleteSchoolBtnClicked', (school) => {
 		confirmDeletionDialog.show({ item: school, itemType: 'school' });
 	});
-	schoolFormDialog.addSubmitListener((school) => {
+	schoolFormDialog.addEventListener('formSubmitted', (school) => {
 		if (school.id > 0) {
 			schoolPage.updateSchool(school);
 		} else {
@@ -28,16 +28,16 @@ $(document).ready(function () {
 		}
 	});
 
-	schoolFormDialog.addAddKlassBtnClickedListener(({ school }) => {
+	schoolFormDialog.addEventListener('addKlassBtnClicked', ({ school }) => {
 		klassFormDialog.show({ mode: 'create', school });
 	});
-	schoolFormDialog.addEditKlassBtnClickedListener(({ school, klass }) => {
+	schoolFormDialog.addEventListener('editKlassBtnClicked', ({ school, klass }) => {
 		klassFormDialog.show({ mode: 'edit', school, klass });
 	});
-	schoolFormDialog.addDeleteKlassBtnClickedListener(({ school, klass }) => {
+	schoolFormDialog.addEventListener('deleteKlassBtnClicked', ({ school, klass }) => {
 		confirmDeletionDialog.show({ item: klass, itemType: 'klass' });
 	});
-	klassFormDialog.addSubmitListener((klass) => {
+	klassFormDialog.addEventListener('formSubmitted', (klass) => {
 		if (klass.id > 0) {
 			schoolFormDialog.updateKlass(klass);
 		} else {
@@ -45,16 +45,16 @@ $(document).ready(function () {
 		}
 	});
 
-	klassFormDialog.addAddStudentBtnClickedListener(({ school, klass }) => {
+	klassFormDialog.addEventListener('addStudentBtnClicked', ({ school, klass }) => {
 		studentFormDialog.show({ mode: 'create', school, klass });
 	});
-	klassFormDialog.addEditStudentBtnClickedListener(({ school, klass, student }) => {
+	klassFormDialog.addEventListener('editStudentBtnClicked', ({ school, klass, student }) => {
 		studentFormDialog.show({ mode: 'edit', school, klass, student });
 	});
-	klassFormDialog.addDeleteStudentBtnClickedListener(({ school, klass, student }) => {
+	klassFormDialog.addEventListener('deleteStudentBtnClicked', ({ school, klass, student }) => {
 		confirmDeletionDialog.show({ item: student, itemType: 'student' });
 	});
-	studentFormDialog.addSubmitListener((student) => {
+	studentFormDialog.addEventListener('formSubmitted', (student) => {
 		if (student.id > 0) {
 			klassFormDialog.updateStudent(student);
 		} else {
@@ -62,7 +62,7 @@ $(document).ready(function () {
 		}
 	});
 
-	confirmDeletionDialog.addConfirmListener(({ item, itemType }) => {
+	confirmDeletionDialog.addEventListener('confirmBtnClicked', ({ item, itemType }) => {
 		switch (itemType) {
 			case 'school':
 				schoolPage.deleteSchool(item);

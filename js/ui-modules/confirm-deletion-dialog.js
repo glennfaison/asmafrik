@@ -3,7 +3,6 @@
 		return {
 			//#region lifecycle methods
 			onInit: function () {
-				this.confirmDeleteListeners = [];
 				this.deleteModal = new args.bootstrap.Modal(args.jQuerySelector);
 				this.confirmBtn = args.$('#confirmDeleteBtn');
 				this.item = null;
@@ -12,21 +11,6 @@
 				this.confirmBtn.click(this.onConfirm.bind(this));
 			},
 			onDestroy: function () { },
-			//#endregion
-
-			//#region register/unregister listeners
-			addConfirmListener: function (listener) {
-				if (!this.confirmDeleteListeners) {
-					this.confirmDeleteListeners = [];
-				}
-				this.confirmDeleteListeners.push(listener);
-			},
-			removeConfirmListener: function (listener) {
-				if (!this.confirmDeleteListeners) {
-					this.confirmDeleteListeners = [];
-				}
-				this.confirmDeleteListeners = this.confirmDeleteListeners.filter((l) => l !== listener);
-			},
 			//#endregion
 
 			//#region UI Actions
@@ -55,10 +39,7 @@
 
 			//#region call listeners
 			onConfirm: async function () {
-				this.confirmDeleteListeners.forEach((listener) => listener({
-					item: this.item,
-					itemType: this.itemType,
-				}));
+				this.fireEvent('confirmBtnClicked', { item: this.item, itemType: this.itemType, });
 				this.deleteModal.hide();
 			},
 			//#endregion

@@ -13,10 +13,6 @@
 			//#region lifecycle methods
 			onInit: function () {
 				this.studentService = args.studentService;
-				this.onSubmitListeners = [];
-				this.AddStudentBtnClickedListeners = [];
-				this.EditStudentBtnClickedListeners = [];
-				this.DeleteStudentBtnClickedListeners = [];
 
 				this.selectedSchool = null;
 				this.selectedKlass = null;
@@ -61,57 +57,6 @@
 				});
 			},
 			onDestroy: function () { },
-			//#endregion
-
-			//#region register/unregister listeners
-			addSubmitListener: function (listener) {
-				if (!this.onSubmitListeners) {
-					this.onSubmitListeners = [];
-				}
-				this.onSubmitListeners.push(listener);
-			},
-			removeSubmitListener: function (listener) {
-				if (!this.onSubmitListeners) {
-					this.onSubmitListeners = [];
-				}
-				this.onSubmitListeners = this.onSubmitListeners.filter((l) => l !== listener);
-			},
-			addAddStudentBtnClickedListener: function (listener) {
-				if (!this.AddStudentBtnClickedListeners) {
-					this.AddStudentBtnClickedListeners = [];
-				}
-				this.AddStudentBtnClickedListeners.push(listener);
-			},
-			removeAddStudentBtnClickedListener: function (listener) {
-				if (!this.AddStudentBtnClickedListeners) {
-					this.AddStudentBtnClickedListeners = [];
-				}
-				this.AddStudentBtnClickedListeners = this.AddStudentBtnClickedListeners.filter((l) => l !== listener);
-			},
-			addEditStudentBtnClickedListener: function (listener) {
-				if (!this.EditStudentBtnClickedListeners) {
-					this.EditStudentBtnClickedListeners = [];
-				}
-				this.EditStudentBtnClickedListeners.push(listener);
-			},
-			removeEditStudentBtnClickedListener: function (listener) {
-				if (!this.EditStudentBtnClickedListeners) {
-					this.EditStudentBtnClickedListeners = [];
-				}
-				this.EditStudentBtnClickedListeners = this.EditStudentBtnClickedListeners.filter((l) => l !== listener);
-			},
-			addDeleteStudentBtnClickedListener: function (listener) {
-				if (!this.DeleteStudentBtnClickedListeners) {
-					this.DeleteStudentBtnClickedListeners = [];
-				}
-				this.DeleteStudentBtnClickedListeners.push(listener);
-			},
-			removeDeleteStudentBtnClickedListener: function (listener) {
-				if (!this.DeleteStudentBtnClickedListeners) {
-					this.DeleteStudentBtnClickedListeners = [];
-				}
-				this.DeleteStudentBtnClickedListeners = this.DeleteStudentBtnClickedListeners.filter((l) => l !== listener);
-			},
 			//#endregion
 
 			//#region UI Actions
@@ -214,24 +159,13 @@
 
 			//#region call listeners
 			onAddStudentBtnClicked: function () {
-				this.AddStudentBtnClickedListeners.forEach((listener) => listener({
-					school: this.selectedSchool,
-					klass: this.selectedKlass,
-				}));
+				this.fireEvent('addStudentBtnClicked', { school: this.selectedSchool, klass: this.selectedKlass, });
 			},
 			onEditStudentBtnClicked: function (student) {
-				this.EditStudentBtnClickedListeners.forEach((listener) => listener({
-					school: this.selectedSchool,
-					klass: this.selectedKlass,
-					student,
-				}));
+				this.fireEvent('editStudentBtnClicked', { school: this.selectedSchool, klass: this.selectedKlass, student });
 			},
 			onDeleteStudentBtnClicked: function (student) {
-				this.DeleteStudentBtnClickedListeners.forEach((listener) => listener({
-					school: this.selectedSchool,
-					klass: this.selectedKlass,
-					student,
-				}));
+				this.fireEvent('deleteStudentBtnClicked', { school: this.selectedSchool, klass: this.selectedKlass, student });
 			},
 			onSubmit: async function (e) {
 				e.preventDefault();
@@ -246,7 +180,7 @@
 					klassData.id = Number(this.selectedKlass?.id);
 				}
 
-				this.onSubmitListeners.forEach((listener) => listener(klassData));
+				this.fireEvent('formSubmitted', klassData);
 				this.klassModal.hide();
 			},
 			//#endregion

@@ -14,9 +14,6 @@
 				this.schoolTableBody = args.$('#schoolTableBody');
 				this.addSchoolBtn = args.$('#addSchoolBtn');
 				this.schoolService = args.schoolService;
-				this.AddSchoolBtnClickedListeners = [];
-				this.EditSchoolBtnClickedListeners = [];
-				this.DeleteSchoolBtnClickedListeners = [];
 
 				await this.renderSchoolList();
 
@@ -48,45 +45,6 @@
 			},
 			onDestroy: function () {
 				// Cleanup code here
-			},
-			//#endregion
-
-			//#region register/unregister listeners
-			addAddSchoolBtnClickedListener: function (listener) {
-				if (!this.AddSchoolBtnClickedListeners) {
-					this.AddSchoolBtnClickedListeners = [];
-				}
-				this.AddSchoolBtnClickedListeners.push(listener);
-			},
-			removeAddSchoolBtnClickedListener: function (listener) {
-				if (!this.AddSchoolBtnClickedListeners) {
-					this.AddSchoolBtnClickedListeners = [];
-				}
-				this.AddSchoolBtnClickedListeners = this.AddSchoolBtnClickedListeners.filter((l) => l !== listener);
-			},
-			addEditSchoolBtnClickedListener: function (listener) {
-				if (!this.EditSchoolBtnClickedListeners) {
-					this.EditSchoolBtnClickedListeners = [];
-				}
-				this.EditSchoolBtnClickedListeners.push(listener);
-			},
-			removeEditSchoolBtnClickedListener: function (listener) {
-				if (!this.EditSchoolBtnClickedListeners) {
-					this.EditSchoolBtnClickedListeners = [];
-				}
-				this.EditSchoolBtnClickedListeners = this.EditSchoolBtnClickedListeners.filter((l) => l !== listener);
-			},
-			addDeleteSchoolBtnClickedListener: function (listener) {
-				if (!this.DeleteSchoolBtnClickedListeners) {
-					this.DeleteSchoolBtnClickedListeners = [];
-				}
-				this.DeleteSchoolBtnClickedListeners.push(listener);
-			},
-			removeDeleteSchoolBtnClickedListener: function (listener) {
-				if (!this.DeleteSchoolBtnClickedListeners) {
-					this.DeleteSchoolBtnClickedListeners = [];
-				}
-				this.DeleteSchoolBtnClickedListeners = this.DeleteSchoolBtnClickedListeners.filter((l) => l !== listener);
 			},
 			//#endregion
 
@@ -148,13 +106,13 @@
 
 			//#region call listeners
 			onAddSchoolBtnClicked: function () {
-				this.AddSchoolBtnClickedListeners.forEach((listener) => listener());
+				this.fireEvent('addSchoolBtnClicked');
 			},
 			onEditSchoolBtnClicked: function (school) {
-				this.EditSchoolBtnClickedListeners.forEach((listener) => listener(school));
+				this.fireEvent('editSchoolBtnClicked', school);
 			},
 			onDeleteSchoolBtnClicked: function (school) {
-				this.DeleteSchoolBtnClickedListeners.forEach((listener) => listener(school));
+				this.fireEvent('deleteSchoolBtnClicked', school);
 			},
 			//#endregion
 		};

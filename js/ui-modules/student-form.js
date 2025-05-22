@@ -8,8 +8,6 @@
 		return {
 			//#region lifecycle methods
 			onInit: function () {
-				this.onSubmitListeners = [];
-
 				this.selectedSchool = null;
 				this.selectedKlass = null;
 				this.selectedStudent = null;
@@ -34,21 +32,6 @@
 				});
 			},
 			onDestroy: function () { },
-			//#endregion
-
-			//#region register/unregister listeners
-			addSubmitListener: function (listener) {
-				if (!this.onSubmitListeners) {
-					this.onSubmitListeners = [];
-				}
-				this.onSubmitListeners.push(listener);
-			},
-			removeSubmitListener: function (listener) {
-				if (!this.onSubmitListeners) {
-					this.onSubmitListeners = [];
-				}
-				this.onSubmitListeners = this.onSubmitListeners.filter((l) => l !== listener);
-			},
 			//#endregion
 
 			//#region UI Actions
@@ -103,7 +86,7 @@
 					studentData.id = Number(this.selectedStudent?.id);
 				}
 
-				this.onSubmitListeners.forEach((listener) => listener(studentData));
+				this.fireEvent('formSubmitted', studentData);
 				this.studentModal.hide();
 			},
 			//#endregion

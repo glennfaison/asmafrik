@@ -13,10 +13,6 @@
 			//#region lifecycle methods
 			onInit: function () {
 				this.klassService = args.klassService;
-				this.onSubmitListeners = [];
-				this.AddKlassBtnClickedListeners = [];
-				this.EditKlassBtnClickedListeners = [];
-				this.DeleteKlassBtnClickedListeners = [];
 
 				this.selectedSchool = null;
 				this.schoolModal = new args.bootstrap.Modal(args.jQuerySelector);
@@ -60,57 +56,6 @@
 				});
 			},
 			onDestroy: function () { },
-			//#endregion
-
-			//#region register/unregister listeners
-			addSubmitListener: function (listener) {
-				if (!this.onSubmitListeners) {
-					this.onSubmitListeners = [];
-				}
-				this.onSubmitListeners.push(listener);
-			},
-			removeSubmitListener: function (listener) {
-				if (!this.onSubmitListeners) {
-					this.onSubmitListeners = [];
-				}
-				this.onSubmitListeners = this.onSubmitListeners.filter((l) => l !== listener);
-			},
-			addAddKlassBtnClickedListener: function (listener) {
-				if (!this.AddKlassBtnClickedListeners) {
-					this.AddKlassBtnClickedListeners = [];
-				}
-				this.AddKlassBtnClickedListeners.push(listener);
-			},
-			removeAddKlassBtnClickedListener: function (listener) {
-				if (!this.AddKlassBtnClickedListeners) {
-					this.AddKlassBtnClickedListeners = [];
-				}
-				this.AddKlassBtnClickedListeners = this.AddKlassBtnClickedListeners.filter((l) => l !== listener);
-			},
-			addEditKlassBtnClickedListener: function (listener) {
-				if (!this.EditKlassBtnClickedListeners) {
-					this.EditKlassBtnClickedListeners = [];
-				}
-				this.EditKlassBtnClickedListeners.push(listener);
-			},
-			removeEditKlassBtnClickedListener: function (listener) {
-				if (!this.EditKlassBtnClickedListeners) {
-					this.EditKlassBtnClickedListeners = [];
-				}
-				this.EditKlassBtnClickedListeners = this.EditKlassBtnClickedListeners.filter((l) => l !== listener);
-			},
-			addDeleteKlassBtnClickedListener: function (listener) {
-				if (!this.DeleteKlassBtnClickedListeners) {
-					this.DeleteKlassBtnClickedListeners = [];
-				}
-				this.DeleteKlassBtnClickedListeners.push(listener);
-			},
-			removeDeleteKlassBtnClickedListener: function (listener) {
-				if (!this.DeleteKlassBtnClickedListeners) {
-					this.DeleteKlassBtnClickedListeners = [];
-				}
-				this.DeleteKlassBtnClickedListeners = this.DeleteKlassBtnClickedListeners.filter((l) => l !== listener);
-			},
 			//#endregion
 
 			//#region UI Actions
@@ -210,13 +155,13 @@
 
 			//#region call listeners
 			onAddKlassBtnClicked: function () {
-				this.AddKlassBtnClickedListeners.forEach((listener) => listener({ school: this.selectedSchool }));
+				this.fireEvent('addKlassBtnClicked', { school: this.selectedSchool });
 			},
 			onEditKlassBtnClicked: function (klass) {
-				this.EditKlassBtnClickedListeners.forEach((listener) => listener({ klass, school: this.selectedSchool }));
+				this.fireEvent('editKlassBtnClicked', { klass, school: this.selectedSchool });
 			},
 			onDeleteKlassBtnClicked: function (klass) {
-				this.DeleteKlassBtnClickedListeners.forEach((listener) => listener({ klass, school: this.selectedSchool }));
+				this.fireEvent('deleteKlassBtnClicked', { klass, school: this.selectedSchool });
 			},
 			onSubmit: async function (e) {
 				e.preventDefault();
@@ -232,7 +177,7 @@
 				}
 				this.selectedSchool = schoolData;
 
-				this.onSubmitListeners.forEach((listener) => listener(this.selectedSchool));
+				this.fireEvent('formSubmitted', this.selectedSchool);
 				this.schoolModal.hide();
 			},
 			//#endregion

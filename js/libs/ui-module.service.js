@@ -1,11 +1,12 @@
 /**
  * Store Registered UI Modules
- *
+ * 
  * @typedef {object} DefaultModule
  * @prop {function():void} DefaultModule.init
  * @prop {function():void} DefaultModule.onInit
  * @prop {function():void} DefaultModule.destroy
  * @prop {function():void} DefaultModule.onDestroy
+ * @prop {(eventName: string, listener: () => void) => typeof listener} DefaultModule.addEventListener
  */
 
 (() => {
@@ -28,6 +29,7 @@
 	function registerUiModule(name, args, moduleFn) {
 		/** @type {DefaultModule} */
 		const defaultModule = {
+			eventListeners: {},
 			init: function () {
 				this.onInit();
 			},
@@ -35,6 +37,32 @@
 			onDestroy: () => { },
 			destroy: function () {
 				this.onDestroy();
+			},
+			get addEventListener() {
+				return (eventName, callback) => {
+					if (Array.isArray(this.eventListeners[eventName])) {
+						this.eventListeners[eventName].push(callback);
+					} else {
+						this.eventListeners[eventName] = [callback];
+					}
+					return this.eventListeners[eventName];
+				}
+			},
+			get removeEventListener() {
+				return (eventName, listener) => {
+					if (Array.isArray(this.eventListeners[eventName])) {
+						this.eventListeners[eventName] = this.eventListeners[eventName].filter((_listener) => _listener !== listener);
+					}
+				};
+			},
+			get fireEvent() {
+				return async (eventName, ...args) => {
+					if (Array.isArray(this.eventListeners[eventName])) {
+						for (const listener of this.eventListeners[eventName]) {
+							await listener(...args);
+						}
+					}
+				};
 			},
 		};
 
